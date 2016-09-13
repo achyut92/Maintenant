@@ -1,20 +1,14 @@
 package com.self.achyut.maintenant.utils;
 
 import android.content.Context;
-import android.content.Intent;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.self.achyut.maintenant.R;
-import com.self.achyut.maintenant.activity.EditLandlord;
-import com.self.achyut.maintenant.activity.TenantDetails;
 import com.self.achyut.maintenant.domain.ElectricityCharge;
 
 import java.util.List;
@@ -39,8 +33,6 @@ public class BillListAdapter extends ArrayAdapter<ElectricityCharge> {
     public View getView(int position, View convertView, ViewGroup parent) {
 
         TextView tvDate,tvReading,tvUnits,tvCharges,tvTotal;
-
-
 
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);

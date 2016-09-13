@@ -6,13 +6,10 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.self.achyut.maintenant.activity.ElectricBill;
 import com.self.achyut.maintenant.domain.ElectricityCharge;
 import com.self.achyut.maintenant.domain.Tenant;
 import com.self.achyut.maintenant.utils.DateHandler;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -185,6 +182,20 @@ public class TenantDataSource {
         // make sure to close the cursor
         cursor.close();
         return bills;
+    }
+
+    public Double getPreviousMonthReading(String id){
+
+
+        Cursor cursor = database.rawQuery("select * from "+TenantDBHandler.TABLE_EB+" where "+TenantDBHandler.COLUMN_TENANT_ID+"="+id+" order by "+TenantDBHandler.COLUMN_DATE+" desc limit 1",null);
+        cursor.moveToFirst();
+
+        ElectricityCharge charge = cursorToBill(cursor);
+
+
+        // make sure to close the cursor
+        cursor.close();
+        return charge.getCurrentReading();
     }
 
     private ElectricityCharge cursorToBill(Cursor cursor) {

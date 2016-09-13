@@ -1,9 +1,8 @@
 package com.self.achyut.maintenant.activity;
 
-import android.app.ListActivity;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -11,14 +10,13 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.self.achyut.maintenant.R;
 import com.self.achyut.maintenant.dbHandler.TenantDataSource;
-import com.self.achyut.maintenant.domain.Landlord;
 import com.self.achyut.maintenant.domain.Tenant;
 import com.self.achyut.maintenant.utils.Constants;
 import com.self.achyut.maintenant.utils.SessionManager;
+
 import java.util.List;
 
 public class TenantList extends AppCompatActivity implements AdapterView.OnItemClickListener {

@@ -1,7 +1,9 @@
 package com.self.achyut.maintenant.activity;
 
-import android.support.v7.app.AppCompatActivity;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.telephony.SmsManager;
 import android.view.View;
 import android.widget.Button;
@@ -14,7 +16,6 @@ import com.self.achyut.maintenant.domain.ElectricityCharge;
 import com.self.achyut.maintenant.domain.Landlord;
 import com.self.achyut.maintenant.domain.Tenant;
 import com.self.achyut.maintenant.utils.Constants;
-import com.self.achyut.maintenant.utils.DateHandler;
 import com.self.achyut.maintenant.utils.SessionManager;
 
 import java.util.Date;
@@ -43,6 +44,11 @@ public class ElectricBill extends AppCompatActivity implements View.OnClickListe
 
         initializeWidgets();
 
+        try{
+            etPrev.setText(String.valueOf(dataSource.getPreviousMonthReading(tenant_id)));
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         calculate.setOnClickListener(this);
         reset.setOnClickListener(this);
         send.setOnClickListener(this);
@@ -89,12 +95,6 @@ public class ElectricBill extends AppCompatActivity implements View.OnClickListe
                 charge.setUnitsConsumed(unit);
                 charge.setCurrentReading(curr);
                 charge.setPreviousReading(prev);
-                if (dataSource.createBill(charge,tenant_id)){
-                    Toast.makeText(getApplicationContext(),Constants.SUCCESS_DB,Toast.LENGTH_LONG).show();
-                } else  {
-                    Toast.makeText(getApplicationContext(),Constants.ERROR_DB,Toast.LENGTH_LONG).show();
-                    break;
-                }
                 send.setEnabled(true);
 
                 break;
@@ -114,23 +114,48 @@ public class ElectricBill extends AppCompatActivity implements View.OnClickListe
                         "\nElectricity Charge - ₹"+(charge.getUnitsConsumed()*tenant.getPerUnitCharge())+
                         "\nRent - ₹"+tenant.getRent()+"\nMaintenance - ₹"+tenant.getMaintenance()+"\nTotal - ₹"+
                         charge.getTotal();
-                Toast.makeText(getApplicationContext(),messageBuilder,Toast.LENGTH_LONG).show();
-                sendSMS(messageBuilder);
+                //Toast.makeText(getApplicationContext(),messageBuilder,Toast.LENGTH_LONG).show();
+
+                if (dataSource.createBill(charge,tenant_id)){
+                    Toast.makeText(getApplicationContext(),Constants.SUCCESS_DB,Toast.LENGTH_LONG).show();
+                    sendSMS(messageBuilder);
+                } else  {
+                    Toast.makeText(getApplicationContext(),Constants.ERROR_DB,Toast.LENGTH_LONG).show();
+                    break;
+                }
         }
 
     }
 
-    private void sendSMS(String messageBuilder) {
-        try {
-            SmsManager smsManager = SmsManager.getDefault();
-            smsManager.sendTextMessage(tenant.getMobile(), null, messageBuilder, null, null);
-            Toast.makeText(getApplicationContext(), "SMS sent.", Toast.LENGTH_LONG).show();
-        }
+    private void sendSMS(final String messageBuilder) {
 
-        catch (Exception e) {
-            Toast.makeText(getApplicationContext(), "SMS failed, please try again.", Toast.LENGTH_LONG).show();
-            e.printStackTrace();
-        }
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Send SMS");
+        builder.setMessage(messageBuilder);
+        builder.setPositiveButton("Send", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                try {
+                    SmsManager smsManager = SmsManager.getDefault();
+                    smsManager.sendTextMessage(tenant.getMobile(), null, messageBuilder, null, null);
+                    Toast.makeText(getApplicationContext(), "SMS sent.", Toast.LENGTH_LONG).show();
+                }
+
+                catch (Exception e) {
+                    Toast.makeText(getApplicationContext(), "SMS failed, please try again.", Toast.LENGTH_LONG).show();
+                    e.printStackTrace();
+                }
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
 

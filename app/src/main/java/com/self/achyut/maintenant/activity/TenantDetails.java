@@ -1,16 +1,8 @@
 package com.self.achyut.maintenant.activity;
 
 import android.content.Intent;
-import android.media.Image;
-import android.os.StrictMode;
-import android.support.v4.view.MenuItemCompat;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -134,7 +126,6 @@ public class TenantDetails extends AppCompatActivity implements View.OnClickList
                 Intent in = new Intent(getApplicationContext(),BillHistory.class);
                 in.putExtra(Constants.ID_MOBILE,tenantId);
                 startActivity(in);
-                finish();
                 break;
         }
     }

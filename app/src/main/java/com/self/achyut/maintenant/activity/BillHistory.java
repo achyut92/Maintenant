@@ -41,4 +41,16 @@ public class BillHistory extends AppCompatActivity {
         lvBills = (ListView)findViewById(R.id.list_bills);
 
     }
+
+    @Override
+    protected void onPause() {
+        dataSource.close();
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        dataSource.open();
+        super.onResume();
+    }
 }
