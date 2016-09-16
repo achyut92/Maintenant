@@ -57,10 +57,12 @@ public class EditLandlord extends AppCompatActivity implements View.OnClickListe
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                startActivity(new Intent(getApplicationContext(),TenantList.class));
                 finish();
                 dialog.dismiss();
             }
         });
+        builder.setCancelable(false);
     }
 
     private void initializeWidget() {
