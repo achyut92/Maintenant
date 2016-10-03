@@ -56,6 +56,7 @@ public class ElectricBill extends AppCompatActivity implements View.OnClickListe
 
     private void initializeWidgets() {
         etCurr = (EditText)findViewById(R.id.curr_read);
+        etCurr.requestFocus();
         etPrev = (EditText)findViewById(R.id.prev_read);
         etUnits = (EditText)findViewById(R.id.units);
         etTotal = (EditText)findViewById(R.id.total);
